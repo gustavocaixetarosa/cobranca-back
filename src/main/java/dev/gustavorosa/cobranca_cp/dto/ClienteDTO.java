@@ -2,7 +2,6 @@ package dev.gustavorosa.cobranca_cp.dto;
 
 import dev.gustavorosa.cobranca_cp.model.Cliente;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 

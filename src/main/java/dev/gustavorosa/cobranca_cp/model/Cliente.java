@@ -12,8 +12,8 @@ import java.util.UUID;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull
     private String nome;
@@ -29,11 +29,11 @@ public class Cliente {
         super();
     }
 
-    public Cliente(UUID id){
+    public Cliente(Long id){
         this.id = id;
     }
 
-    public Cliente(UUID id, String nome, String endereco, String telefone, LocalDate dataVencimentoContrato, String cpfOuCnpj, String banco) {
+    public Cliente(Long id, String nome, String endereco, String telefone, LocalDate dataVencimentoContrato, String cpfOuCnpj, String banco) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -52,11 +52,11 @@ public class Cliente {
         this.banco = clienteDTO.banco();
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
