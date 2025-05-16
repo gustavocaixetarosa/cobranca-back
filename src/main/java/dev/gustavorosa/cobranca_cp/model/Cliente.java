@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +26,10 @@ public class Cliente {
     @NotNull
     private String registro;
     private String banco;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contrato> contratos = new ArrayList<>();
+
 
     public Cliente(){
         super();
@@ -108,7 +114,11 @@ public class Cliente {
         this.banco = banco;
     }
 
-    public boolean valido() {
-        return true;
+    public List<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(List<Contrato> contratos) {
+        this.contratos = contratos;
     }
 }
