@@ -1,5 +1,6 @@
 package dev.gustavorosa.cobranca_cp.model;
 
+import dev.gustavorosa.cobranca_cp.dto.ClienteDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,7 +22,7 @@ public class Cliente {
     private String telefone;
     private LocalDate dataVencimentoContrato;
     @NotNull
-    private String cpfOuCnpj;
+    private String registro;
     private String banco;
 
     public Cliente(){
@@ -38,12 +39,17 @@ public class Cliente {
         this.endereco = endereco;
         this.telefone = telefone;
         this.dataVencimentoContrato = dataVencimentoContrato;
-        this.cpfOuCnpj = cpfOuCnpj;
+        this.registro = cpfOuCnpj;
         this.banco = banco;
     }
 
-    public static Cliente registrar() {
-        return new Cliente(UUID.randomUUID());
+    public Cliente(ClienteDTO clienteDTO) {
+        this.nome = clienteDTO.nome();
+        this.endereco = clienteDTO.endereco();
+        this.telefone = clienteDTO.telefone();
+        this.dataVencimentoContrato = clienteDTO.dataContrato();
+        this.registro = clienteDTO.registro();
+        this.banco = clienteDTO.banco();
     }
 
     public UUID getId() {
@@ -86,12 +92,12 @@ public class Cliente {
         this.dataVencimentoContrato = dataVencimentoContrato;
     }
 
-    public String getCpfOuCnpj() {
-        return cpfOuCnpj;
+    public String getRegistro() {
+        return registro;
     }
 
-    public void setCpfOuCnpj(String cpfOuCnpj) {
-        this.cpfOuCnpj = cpfOuCnpj;
+    public void setRegistro(String registro) {
+        this.registro = registro;
     }
 
     public String getBanco() {
@@ -100,5 +106,9 @@ public class Cliente {
 
     public void setBanco(String banco) {
         this.banco = banco;
+    }
+
+    public boolean valido() {
+        return true;
     }
 }

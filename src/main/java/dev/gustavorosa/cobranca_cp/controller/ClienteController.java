@@ -10,21 +10,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriBuilder;
 
 import java.net.URI;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("clientes")
+@RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> registraCliente(@RequestBody ClienteDTO clienteDTO){
-        Cliente novoCliente = Cliente.registrar();
+    public ResponseEntity<ClienteDTO> registraCliente(@RequestBody ClienteDTO clienteDTO){
+        Cliente novoCliente = clienteService.registraCliente(clienteDTO);
 
         URI localNovoCliente = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -32,6 +30,6 @@ public class ClienteController {
                 .buildAndExpand(novoCliente.getId())
                 .toUri();
 
-        return ResponseEntity.created(localNovoCliente).body(novoCliente);
+        return ResponseEntity.created(localNovoCliente).body(new ClienteDTO(novoCliente));
     }
 }

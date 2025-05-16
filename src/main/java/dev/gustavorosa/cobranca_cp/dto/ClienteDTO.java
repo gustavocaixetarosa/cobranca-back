@@ -1,5 +1,6 @@
 package dev.gustavorosa.cobranca_cp.dto;
 
+import dev.gustavorosa.cobranca_cp.model.Cliente;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,4 +14,14 @@ public record ClienteDTO(
         @NotBlank(message = "Cliente deve ter cpf ou cnpj") String registro,
         String banco
 ) {
+    public ClienteDTO(Cliente novoCliente) {
+        this(
+                novoCliente.getNome(),
+                novoCliente.getEndereco(),
+                novoCliente.getTelefone(),
+                novoCliente.getDataVencimentoContrato(),
+                novoCliente.getRegistro(),
+                novoCliente.getBanco()
+        );
+    }
 }
