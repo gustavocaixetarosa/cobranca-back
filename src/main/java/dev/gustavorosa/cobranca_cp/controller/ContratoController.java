@@ -1,7 +1,9 @@
 package dev.gustavorosa.cobranca_cp.controller;
 
 import dev.gustavorosa.cobranca_cp.dto.ContratoDTO;
+import dev.gustavorosa.cobranca_cp.dto.ContratoDetailsDTO;
 import dev.gustavorosa.cobranca_cp.model.Contrato;
+import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.service.ContratoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +38,12 @@ public class ContratoController {
         List<Contrato> todosContratos = contratoService.recuperarContratos();
         List<ContratoDTO> respostaDTO = todosContratos.stream().map(ContratoDTO::new).toList();
         return ResponseEntity.ok(respostaDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ContratoDetailsDTO> recuperarContratoPorId(@PathVariable Long id){
+        Contrato contrato = contratoService.recuperarContratoPorId(id);
+        ContratoDetailsDTO contratoResposta = new ContratoDetailsDTO(contrato);
+        return ResponseEntity.ok(contratoResposta);
     }
 }

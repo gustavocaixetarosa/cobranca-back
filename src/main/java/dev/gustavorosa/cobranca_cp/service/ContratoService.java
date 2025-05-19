@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContratoService {
@@ -34,5 +35,11 @@ public class ContratoService {
         List<Contrato> todosContratos = contratoRepository.findAll();
         if(todosContratos.isEmpty()) throw new RuntimeException("Nenhum contrato encontrado.");
         return todosContratos;
+    }
+
+    public Contrato recuperarContratoPorId(Long id) {
+        Optional<Contrato> contratoRecuperado = contratoRepository.findById(id);
+        if(contratoRecuperado.isEmpty()) throw new RuntimeException("Contrato não encontrado.");
+        return contratoRecuperado.get();
     }
 }
