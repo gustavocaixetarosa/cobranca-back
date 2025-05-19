@@ -22,11 +22,13 @@ public class Pagamento {
     @Enumerated(EnumType.STRING)
     private SituacaoPagamento status;
     private String observacao;
+    private Integer numeroParcela;
 
     public Pagamento() {
     }
 
-    public Pagamento(Long id, Contrato contrato, BigDecimal valor, LocalDate dataVencimento, LocalDate dataPagamento, SituacaoPagamento status, String observacao) {
+    public Pagamento(Long id, Contrato contrato, BigDecimal valor, LocalDate dataVencimento,
+                     LocalDate dataPagamento, SituacaoPagamento status, String observacao, Integer numeroParcela) {
         this.id = id;
         this.contrato = contrato;
         this.valor = valor;
@@ -34,6 +36,7 @@ public class Pagamento {
         this.dataPagamento = dataPagamento;
         this.status = status;
         this.observacao = observacao;
+        this.numeroParcela = numeroParcela;
     }
 
     public Long getId() {
@@ -42,14 +45,6 @@ public class Pagamento {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Contrato getIdContrato() {
-        return contrato;
-    }
-
-    public void setIdContrato(Contrato contrato) {
-        this.contrato = contrato;
     }
 
     public BigDecimal getValor() {
@@ -90,5 +85,35 @@ public class Pagamento {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public Contrato getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(Contrato contrato) {
+        this.contrato = contrato;
+    }
+
+    public Integer getNumeroParcela() {
+        return numeroParcela;
+    }
+
+    public void setNumeroParcela(Integer numeroParcela) {
+        this.numeroParcela = numeroParcela;
+    }
+
+    @Override
+    public String toString() {
+        return "Pagamento{" +
+                "id=" + id +
+                ", contrato=" + contrato +
+                ", valor=" + valor +
+                ", dataVencimento=" + dataVencimento +
+                ", dataPagamento=" + dataPagamento +
+                ", status=" + status +
+                ", observacao='" + observacao + '\'' +
+                ", numeroParcela=" + numeroParcela +
+                '}';
     }
 }

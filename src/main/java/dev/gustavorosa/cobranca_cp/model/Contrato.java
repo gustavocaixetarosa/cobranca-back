@@ -1,10 +1,10 @@
 package dev.gustavorosa.cobranca_cp.model;
 
+import dev.gustavorosa.cobranca_cp.dto.ContratoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,8 +21,8 @@ public class Contrato {
     private String nomeMensalista;
     private String registroMensalista;
     private String telefoneMensalista;
-    private Integer duracaoEmMeses;
-    private LocalDate diaVencimento;
+    private Integer parcelas;
+    private Integer diaVencimento;
     private BigDecimal valorMensal;
     @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos;
@@ -32,17 +32,26 @@ public class Contrato {
         super();
     }
 
-    public Contrato(Long id, String nomeMensalista, String registroMensalista, String telefoneMensalista, Integer duracaoEmMeses, LocalDate diaVencimento, BigDecimal valorMensal, List<Pagamento> pagamentos) {
+    public Contrato(Long id, String nomeMensalista, String registroMensalista, String telefoneMensalista, Integer duracaoEmMeses, Integer diaVencimento, BigDecimal valorMensal, List<Pagamento> pagamentos) {
         this.id = id;
         this.nomeMensalista = nomeMensalista;
         this.registroMensalista = registroMensalista;
         this.telefoneMensalista = telefoneMensalista;
-        this.duracaoEmMeses = duracaoEmMeses;
+        this.parcelas = duracaoEmMeses;
         this.diaVencimento = diaVencimento;
         this.valorMensal = valorMensal;
         this.pagamentos = pagamentos;
     }
 
+    public Contrato(ContratoDTO contratoDTO, Cliente cliente) {
+        this.cliente = cliente;
+        this.nomeMensalista = contratoDTO.nomeMensalista();
+        this.telefoneMensalista = contratoDTO.telefoneMensalista();
+        this.registroMensalista = contratoDTO.registroMensalista();
+        this.diaVencimento = contratoDTO.diaVencimento();
+        this.parcelas = contratoDTO.duracaoEmMeses();
+        this.valorMensal = contratoDTO.valorMensal();
+    }
 
 
     public Long getId() {
@@ -51,6 +60,14 @@ public class Contrato {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public String getNomeMensalista() {
@@ -77,19 +94,19 @@ public class Contrato {
         this.telefoneMensalista = telefoneMensalista;
     }
 
-    public Integer getDuracaoEmMeses() {
-        return duracaoEmMeses;
+    public Integer getParcelas() {
+        return parcelas;
     }
 
-    public void setDuracaoEmMeses(Integer duracaoEmMeses) {
-        this.duracaoEmMeses = duracaoEmMeses;
+    public void setParcelas(Integer parcelas) {
+        this.parcelas = parcelas;
     }
 
-    public LocalDate getDiaVencimento() {
+    public Integer getDiaVencimento() {
         return diaVencimento;
     }
 
-    public void setDiaVencimento(LocalDate diaVencimento) {
+    public void setDiaVencimento(Integer diaVencimento) {
         this.diaVencimento = diaVencimento;
     }
 

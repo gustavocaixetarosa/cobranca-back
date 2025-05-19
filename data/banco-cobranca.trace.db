@@ -1,0 +1,6 @@
+2025-05-16 16:50:06.595052-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CLIENTES" not found (this database is empty); SQL statement:
+insert into clientes (banco,data_vencimento_contrato,endereco,nome,registro,telefone,id) values (?,?,?,?,?,?,default) [42104-232]
+2025-05-16 16:50:21.713136-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CLIENTES" not found (this database is empty); SQL statement:
+insert into clientes (banco,data_vencimento_contrato,endereco,nome,registro,telefone,id) values (?,?,?,?,?,?,default) [42104-232]
