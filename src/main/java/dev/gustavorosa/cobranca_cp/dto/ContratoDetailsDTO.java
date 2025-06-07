@@ -4,27 +4,27 @@ import dev.gustavorosa.cobranca_cp.model.Cliente;
 import dev.gustavorosa.cobranca_cp.model.Contrato;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public record ContratoDetailsDTO(
-        Long id,
-        String nomeCliente,
-        String nomeMensalista,
-        String registroMensalista,
-        String telefoneMensalista,
-        Integer parcelas,
-        List<Pagamento> pagamentos
+        Long contratoId,
+        Long cliente_id,
+        Integer duracaoEmMeses,
+        String cpfContratante,
+        String nomeContratante,
+        LocalDate data,
+        Double valorContrato
 ) {
 
     public ContratoDetailsDTO(Contrato contrato){
         this(
                 contrato.getId(),
-                contrato.getCliente().getNome(),
-                contrato.getNomeMensalista(),
-                contrato.getRegistroMensalista(),
-                contrato.getTelefoneMensalista(),
-                contrato.getParcelas(),
-                contrato.getPagamentos()
-        );
+                contrato.getCliente().getId(),
+                contrato.getDuracaoEmMeses(),
+                contrato.getCpfContratante(),
+                contrato.getNomeContratante(),
+                contrato.getData(),
+                contrato.getValorContrato());
     }
 }

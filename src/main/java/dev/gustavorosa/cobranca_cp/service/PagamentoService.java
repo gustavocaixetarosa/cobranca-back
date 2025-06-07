@@ -31,16 +31,16 @@ public class PagamentoService {
     }
 
     private Pagamento gerarPagamento(Contrato novoContrato, LocalDate data, int numero) {
-        return new Pagamento(null, novoContrato, novoContrato.getValorMensal(), data, null, SituacaoPagamento.EM_ABERTO, null, numero);
+        return new Pagamento(null, novoContrato, novoContrato.getValorContrato(), data, null, SituacaoPagamento.EM_ABERTO, null, numero);
     }
 
     private List<LocalDate> gerarDatasVencimento(Contrato novoContrato){
-        Month primeiroMes = (novoContrato.getDiaVencimento() > LocalDate.now().getDayOfMonth())
+        Month primeiroMes = (novoContrato.getData().getDayOfMonth() > LocalDate.now().getDayOfMonth())
                 ? LocalDate.now().getMonth() : LocalDate.now().getMonth().plus(1);
         List<LocalDate> todasDatas = new ArrayList<>();
         int anoAtual = LocalDate.now().getYear();
-        for(int i = 0; i < novoContrato.getParcelas(); i++){
-            LocalDate novaData = LocalDate.of(anoAtual, primeiroMes, novoContrato.getDiaVencimento()).plusMonths(i);
+        for(int i = 0; i < novoContrato.getDuracaoEmMeses(); i++){
+            LocalDate novaData = LocalDate.of(anoAtual, primeiroMes, novoContrato.getData().getYear()).plusMonths(i);
             todasDatas.add(novaData);
         }
         return todasDatas;
@@ -52,5 +52,14 @@ public class PagamentoService {
         List<Pagamento> pagamentosAtrasados = pagamentoRepository.findByDataVencimentoBeforeAndDataPagamentoIsNull(dataHoje);
         pagamentosAtrasados.forEach(p -> p.setStatus(SituacaoPagamento.ATRASADO));
         pagamentoRepository.saveAll(pagamentosAtrasados);
+    }
+
+    public List<Pagamento> recuperarTodos() {
+        List<Pagamento> recuperados = this.pagamentoRepository.findAll();
+        if(recuperados.isEmpty()){
+            throw new RuntimeException("Nenhum pagamento encontrado");
+        }
+        return recuperados;
+
     }
 }

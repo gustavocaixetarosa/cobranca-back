@@ -19,7 +19,7 @@ public class Pagamento {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contrato_id", nullable = false)
     private Contrato contrato;
-    private BigDecimal valor;
+    private Double valor;
     private LocalDate dataVencimento;
     private LocalDate dataPagamento;
     @Enumerated(EnumType.STRING)
@@ -30,7 +30,7 @@ public class Pagamento {
     public Pagamento() {
     }
 
-    public Pagamento(Long id, Contrato contrato, BigDecimal valor, LocalDate dataVencimento,
+    public Pagamento(Long id, Contrato contrato, Double valor, LocalDate dataVencimento,
                      LocalDate dataPagamento, SituacaoPagamento status, String observacao, Integer numeroParcela) {
         this.id = id;
         this.contrato = contrato;
@@ -50,11 +50,11 @@ public class Pagamento {
         this.id = id;
     }
 
-    public BigDecimal getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

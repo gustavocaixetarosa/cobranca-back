@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,12 +22,11 @@ public class Contrato {
     @JsonIgnore
     private Cliente cliente;
     @NotBlank
-    private String nomeMensalista;
-    private String registroMensalista;
-    private String telefoneMensalista;
-    private Integer parcelas;
-    private Integer diaVencimento;
-    private BigDecimal valorMensal;
+    private String nomeContratante;
+    private String cpfContratante;
+    private Integer duracaoEmMeses;
+    private LocalDate data;
+    private Double valorContrato;
     @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos;
 
@@ -34,27 +35,26 @@ public class Contrato {
         super();
     }
 
-    public Contrato(Long id, String nomeMensalista, String registroMensalista, String telefoneMensalista, Integer duracaoEmMeses, Integer diaVencimento, BigDecimal valorMensal, List<Pagamento> pagamentos) {
+    public Contrato(ContratoDTO dto, Cliente cliente){
+        this.cliente = cliente;
+        this.nomeContratante = dto.nomeContratante();
+        this.cpfContratante = dto.cpfContratante();
+        this.duracaoEmMeses = dto.duracaoEmMeses();
+        this.data = dto.data();
+        this.valorContrato = dto.valorContrato();
+        this.pagamentos = new ArrayList<>();
+    }
+
+    public Contrato(Long id, Cliente cliente, String nomeContratante, String cpfContratante,
+                    LocalDate data, Double valorContrato, List<Pagamento> pagamentos) {
         this.id = id;
-        this.nomeMensalista = nomeMensalista;
-        this.registroMensalista = registroMensalista;
-        this.telefoneMensalista = telefoneMensalista;
-        this.parcelas = duracaoEmMeses;
-        this.diaVencimento = diaVencimento;
-        this.valorMensal = valorMensal;
+        this.cliente = cliente;
+        this.nomeContratante = nomeContratante;
+        this.cpfContratante = cpfContratante;
+        this.data = data;
+        this.valorContrato = valorContrato;
         this.pagamentos = pagamentos;
     }
-
-    public Contrato(ContratoDTO contratoDTO, Cliente cliente) {
-        this.cliente = cliente;
-        this.nomeMensalista = contratoDTO.nomeMensalista();
-        this.telefoneMensalista = contratoDTO.telefoneMensalista();
-        this.registroMensalista = contratoDTO.registroMensalista();
-        this.diaVencimento = contratoDTO.diaVencimento();
-        this.parcelas = contratoDTO.duracaoEmMeses();
-        this.valorMensal = contratoDTO.valorMensal();
-    }
-
 
     public Long getId() {
         return id;
@@ -72,52 +72,44 @@ public class Contrato {
         this.cliente = cliente;
     }
 
-    public String getNomeMensalista() {
-        return nomeMensalista;
+    public @NotBlank String getNomeContratante() {
+        return nomeContratante;
     }
 
-    public void setNomeMensalista(String nomeMensalista) {
-        this.nomeMensalista = nomeMensalista;
+    public void setNomeContratante(@NotBlank String nomeContratante) {
+        this.nomeContratante = nomeContratante;
     }
 
-    public String getRegistroMensalista() {
-        return registroMensalista;
+    public String getCpfContratante() {
+        return cpfContratante;
     }
 
-    public void setRegistroMensalista(String registroMensalista) {
-        this.registroMensalista = registroMensalista;
+    public void setCpfContratante(String cpfContratante) {
+        this.cpfContratante = cpfContratante;
     }
 
-    public String getTelefoneMensalista() {
-        return telefoneMensalista;
+    public Integer getDuracaoEmMeses() {
+        return duracaoEmMeses;
     }
 
-    public void setTelefoneMensalista(String telefoneMensalista) {
-        this.telefoneMensalista = telefoneMensalista;
+    public void setDuracaoEmMeses(Integer duracaoEmMeses) {
+        this.duracaoEmMeses = duracaoEmMeses;
     }
 
-    public Integer getParcelas() {
-        return parcelas;
+    public LocalDate getData() {
+        return data;
     }
 
-    public void setParcelas(Integer parcelas) {
-        this.parcelas = parcelas;
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 
-    public Integer getDiaVencimento() {
-        return diaVencimento;
+    public Double getValorContrato() {
+        return valorContrato;
     }
 
-    public void setDiaVencimento(Integer diaVencimento) {
-        this.diaVencimento = diaVencimento;
-    }
-
-    public BigDecimal getValorMensal() {
-        return valorMensal;
-    }
-
-    public void setValorMensal(BigDecimal valorMensal) {
-        this.valorMensal = valorMensal;
+    public void setValorContrato(Double valorContrato) {
+        this.valorContrato = valorContrato;
     }
 
     public List<Pagamento> getPagamentos() {
