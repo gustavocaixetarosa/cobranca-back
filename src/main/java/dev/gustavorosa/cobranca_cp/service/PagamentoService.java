@@ -6,10 +6,10 @@ import dev.gustavorosa.cobranca_cp.model.SituacaoPagamento;
 import dev.gustavorosa.cobranca_cp.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,6 @@ public class PagamentoService {
             novosPagamentos.add(gerarPagamento(novoContrato, data, numeroPagamento));
             numeroPagamento++;
         }
-        System.out.println(novosPagamentos);
         return novosPagamentos;
     }
 
@@ -45,5 +44,13 @@ public class PagamentoService {
             todasDatas.add(novaData);
         }
         return todasDatas;
+    }
+
+    @Transactional
+    private void atualizarSituacaoPagamentos(){
+        LocalDate dataHoje = LocalDate.now();
+        List<Pagamento> pagamentosAtrasados = pagamentoRepository.findByDataVencimentoBeforeAndDataPagamentoIsNull(dataHoje);
+        pagamentosAtrasados.forEach(p -> p.setStatus(SituacaoPagamento.ATRASADO));
+        pagamentoRepository.saveAll(pagamentosAtrasados);
     }
 }

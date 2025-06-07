@@ -1,6 +1,7 @@
 package dev.gustavorosa.cobranca_cp.controller;
 
 import dev.gustavorosa.cobranca_cp.dto.ClienteDTO;
+import dev.gustavorosa.cobranca_cp.dto.ClienteDetailsDTO;
 import dev.gustavorosa.cobranca_cp.model.Cliente;
 import dev.gustavorosa.cobranca_cp.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClienteController {
 
     @Autowired
@@ -39,9 +41,9 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> recuperarClientePorId(@PathVariable Long id){
+    public ResponseEntity<ClienteDetailsDTO> recuperarClientePorId(@PathVariable Long id){
         Cliente clienteRecuperado = clienteService.recuperarPorId(id);
-        return ResponseEntity.ok(new ClienteDTO(clienteRecuperado));
+        return ResponseEntity.ok(new ClienteDetailsDTO(clienteRecuperado));
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package dev.gustavorosa.cobranca_cp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.gustavorosa.cobranca_cp.dto.ContratoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ public class Contrato {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Cliente cliente;
     @NotBlank
     private String nomeMensalista;
