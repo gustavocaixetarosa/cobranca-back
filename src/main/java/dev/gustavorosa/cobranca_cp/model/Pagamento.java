@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "pagamentos")
+@Table(name = "PAGAMENTOS")
 public class Pagamento {
 
     @Id
@@ -66,8 +66,8 @@ public class Pagamento {
         this.dataVencimento = dataVencimento;
     }
 
-    public LocalDate getDataPagamento() {
-        return dataPagamento;
+    public String getDataPagamento() {
+        return dataPagamento != null ? dataPagamento.toString() : "";
     }
 
     public void setDataPagamento(LocalDate dataPagamento) {

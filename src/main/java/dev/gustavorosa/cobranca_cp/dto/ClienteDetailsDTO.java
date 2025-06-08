@@ -3,7 +3,7 @@ package dev.gustavorosa.cobranca_cp.dto;
 import dev.gustavorosa.cobranca_cp.model.Cliente;
 
 public record ClienteDetailsDTO(
-        Long id,
+        Long cliente_id,
         String nome,
         String endereco,
         String telefone,

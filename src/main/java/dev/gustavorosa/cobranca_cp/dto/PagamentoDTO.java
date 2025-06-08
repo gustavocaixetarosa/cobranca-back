@@ -3,12 +3,13 @@ package dev.gustavorosa.cobranca_cp.dto;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
 
 public record PagamentoDTO(
-        Long pagamentoId,
-        Long contratoId,
+        Long pagamento_id,
+        Long contrato_id,
         Double valor,
-        String dataPagamento,
-        String dataVencimento,
-        String status
+        String data_pagamento,
+        String data_vencimento,
+        String status,
+        String observacao
 ) {
 
     public PagamentoDTO(Pagamento pagamento){
@@ -16,9 +17,10 @@ public record PagamentoDTO(
                 pagamento.getId(),
                 pagamento.getContrato().getId(),
                 pagamento.getValor(),
-                pagamento.getDataPagamento().toString(),
+                pagamento.getDataPagamento(),
                 pagamento.getDataVencimento().toString(),
-                pagamento.getStatus().toString()
+                pagamento.getStatus().toString(),
+                pagamento.getObservacao()
         );
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "contratos")
+@Table(name = "CONTRATOS")
 public class Contrato {
 
     @Id
@@ -21,8 +21,7 @@ public class Contrato {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Cliente cliente;
-    @NotBlank
-    private String nomeContratante;
+    @NotBlank private String nomeContratante;
     private String cpfContratante;
     private Integer duracaoEmMeses;
     private LocalDate data;

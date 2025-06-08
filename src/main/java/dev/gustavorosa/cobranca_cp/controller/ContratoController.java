@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/contratos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ContratoController {
 
     @Autowired
@@ -34,9 +35,9 @@ public class ContratoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ContratoDTO>> recuperarContratos(){
+    public ResponseEntity<List<ContratoDetailsDTO>> recuperarContratos(){
         List<Contrato> todosContratos = contratoService.recuperarContratos();
-        List<ContratoDTO> respostaDTO = todosContratos.stream().map(ContratoDTO::new).toList();
+        List<ContratoDetailsDTO> respostaDTO = todosContratos.stream().map(ContratoDetailsDTO::new).toList();
         return ResponseEntity.ok(respostaDTO);
     }
 

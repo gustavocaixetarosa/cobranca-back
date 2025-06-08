@@ -34,9 +34,9 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> recuperarClientes(){
+    public ResponseEntity<List<ClienteDetailsDTO>> recuperarClientes(){
         List<Cliente> todosClientes = clienteService.recuperarTodos();
-        List<ClienteDTO> respostaDTO = todosClientes.stream().map(ClienteDTO::new).toList();
+        List<ClienteDetailsDTO> respostaDTO = todosClientes.stream().map(ClienteDetailsDTO::new).toList();
         return ResponseEntity.ok(respostaDTO);
     }
 

@@ -5,6 +5,7 @@ import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.service.PagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pagamentos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PagamentoController {
 
     @Autowired
@@ -20,7 +22,7 @@ public class PagamentoController {
 
     @GetMapping
     public ResponseEntity<List<PagamentoDTO>> recuperarPagamentos(){
-       List<Pagamento> pagamentosRecuperados = pagamentoService.recuperarTsssssssssssssssssssssssssssssssssssssssssssodos();
+       List<Pagamento> pagamentosRecuperados = pagamentoService.recuperarTodos();
        List<PagamentoDTO> dtos = pagamentosRecuperados.stream().map(PagamentoDTO::new).toList();
        return ResponseEntity.ok(dtos);
     }
