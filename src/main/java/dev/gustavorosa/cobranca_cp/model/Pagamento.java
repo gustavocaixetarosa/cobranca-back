@@ -1,10 +1,9 @@
 package dev.gustavorosa.cobranca_cp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import dev.gustavorosa.cobranca_cp.dto.PagamentoDTO;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -118,5 +117,29 @@ public class Pagamento {
                 ", observacao='" + observacao + '\'' +
                 ", numeroParcela=" + numeroParcela +
                 '}';
+    }
+
+    public void atualizar(PagamentoDTO pagamento) {
+        this.dataPagamento = converteDate(pagamento.data_pagamento());
+        verificarStatus();
+    }
+
+    private void verificarStatus() {
+        if(this.dataPagamento == null && this.dataVencimento.isBefore(LocalDate.now())){
+            this.status = SituacaoPagamento.ATRASADO;
+        } else if(this.dataPagamento != null){
+            if(this.dataPagamento.isBefore(this.dataVencimento) || this.dataPagamento.isEqual(this.dataVencimento)) this.status = SituacaoPagamento.PAGO;
+            else if(this.dataPagamento.isAfter(this.dataVencimento)) this.status = SituacaoPagamento.PAGO_COM_ATRASO;
+        } else {
+            this.status = SituacaoPagamento.EM_ABERTO;
+        }
+    }
+
+    private LocalDate converteDate(String s) {
+        String[] pedacos = s.split("-");
+        int ano = Integer.parseInt(pedacos[0]);
+        int mes = Integer.parseInt(pedacos[1]);
+        int dia = Integer.parseInt(pedacos[2]);
+        return LocalDate.of(ano, mes, dia);
     }
 }

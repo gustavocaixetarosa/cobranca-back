@@ -1,9 +1,12 @@
 package dev.gustavorosa.cobranca_cp.service;
 
+import dev.gustavorosa.cobranca_cp.dto.PagamentoDTO;
+import dev.gustavorosa.cobranca_cp.factory.PagamentoFactory;
 import dev.gustavorosa.cobranca_cp.model.Contrato;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.model.SituacaoPagamento;
 import dev.gustavorosa.cobranca_cp.repository.PagamentoRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +15,16 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PagamentoService {
 
     @Autowired
     private PagamentoRepository pagamentoRepository;
+
+    @Autowired
+    private PagamentoFactory pagamentoFactory;
 
     public List<Pagamento> gerarPagamentosAutomaticos(Contrato novoContrato){
         List<Pagamento> novosPagamentos = new ArrayList<>();
@@ -61,5 +68,16 @@ public class PagamentoService {
         }
         return recuperados;
 
+    }
+
+    public Pagamento atualizarPagamento(PagamentoDTO dto, Long id) {
+        Pagamento pagamento = this.pagamentoFactory.fromDTO(dto);
+        Optional<Pagamento> pagamentoRecuperado = this.pagamentoRepository.findById(id);
+        if(pagamentoRecuperado.isEmpty()) throw new RuntimeException("Pagamento nao encontrado");
+        Pagamento pagamentoParaAtualizar = pagamentoRecuperado.get();
+        pagamentoParaAtualizar.atualizar(dto);
+        this.pagamentoRepository.save(pagamentoParaAtualizar);
+
+        return pagamentoParaAtualizar;
     }
 }

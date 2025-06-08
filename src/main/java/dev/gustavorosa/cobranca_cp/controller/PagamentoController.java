@@ -5,10 +5,7 @@ import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.service.PagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +22,13 @@ public class PagamentoController {
        List<Pagamento> pagamentosRecuperados = pagamentoService.recuperarTodos();
        List<PagamentoDTO> dtos = pagamentosRecuperados.stream().map(PagamentoDTO::new).toList();
        return ResponseEntity.ok(dtos);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PagamentoDTO> atualizarPagamento(@RequestBody PagamentoDTO dto, @PathVariable Long id){
+        System.out.println("Comecando atualizacao");
+       Pagamento atualizado = this.pagamentoService.atualizarPagamento(dto, id);
+       System.out.println("Atualizando pagamento " + id);
+       return ResponseEntity.ok(new PagamentoDTO(atualizado));
     }
 }

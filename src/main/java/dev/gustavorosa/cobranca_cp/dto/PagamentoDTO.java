@@ -9,7 +9,8 @@ public record PagamentoDTO(
         String data_pagamento,
         String data_vencimento,
         String status,
-        String observacao
+        String observacao,
+        Integer numero_parcela
 ) {
 
     public PagamentoDTO(Pagamento pagamento){
@@ -20,7 +21,8 @@ public record PagamentoDTO(
                 pagamento.getDataPagamento(),
                 pagamento.getDataVencimento().toString(),
                 pagamento.getStatus().toString(),
-                pagamento.getObservacao()
+                pagamento.getObservacao(),
+                pagamento.getNumeroParcela()
         );
     }
 }
