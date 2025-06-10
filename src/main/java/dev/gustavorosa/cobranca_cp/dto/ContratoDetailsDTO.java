@@ -1,11 +1,8 @@
 package dev.gustavorosa.cobranca_cp.dto;
 
-import dev.gustavorosa.cobranca_cp.model.Cliente;
 import dev.gustavorosa.cobranca_cp.model.Contrato;
-import dev.gustavorosa.cobranca_cp.model.Pagamento;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public record ContratoDetailsDTO(
         Long contrato_id,
@@ -24,7 +21,7 @@ public record ContratoDetailsDTO(
                 contrato.getDuracaoEmMeses(),
                 contrato.getCpfContratante(),
                 contrato.getNomeContratante(),
-                contrato.getData(),
+                contrato.getDataInicioContrato(),
                 contrato.getValorContrato());
     }
 }

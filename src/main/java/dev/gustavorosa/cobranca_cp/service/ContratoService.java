@@ -5,9 +5,11 @@ import dev.gustavorosa.cobranca_cp.model.Cliente;
 import dev.gustavorosa.cobranca_cp.model.Contrato;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.repository.ContratoRepository;
+import dev.gustavorosa.cobranca_cp.utils.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +28,7 @@ public class ContratoService {
     public Contrato registrarContrato(ContratoDTO contratoDTO) {
         Cliente cliente = clienteService.recuperarPorId(contratoDTO.clienteId());
         Contrato novoContrato = new Contrato(contratoDTO, cliente);
-        List<Pagamento> novosPagamentos = pagamentoService.gerarPagamentosAutomaticos(novoContrato);
+        List<Pagamento> novosPagamentos = pagamentoService.gerarPagamentosAutomaticos(novoContrato, contratoDTO.dataPrimeiraParcela());
         novoContrato.setPagamentos(novosPagamentos);
         return contratoRepository.save(novoContrato);
     }

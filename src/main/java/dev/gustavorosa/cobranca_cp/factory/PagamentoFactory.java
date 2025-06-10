@@ -17,7 +17,11 @@ public class PagamentoFactory {
     private ContratoRepository contratoRepository;
 
     public Pagamento fromDTO(PagamentoDTO dto){
-        LocalDate dataPagamento = converteDate(dto.data_pagamento());
+        LocalDate dataPagamento = null;
+        if(!dto.data_pagamento().isEmpty()){
+            System.out.println("Data de pagamento : " + dto.data_pagamento());
+            dataPagamento = converteDate(dto.data_pagamento());
+        }
         LocalDate dataVencimento = converteDate(dto.data_vencimento());
 
         Contrato contrato = contratoRepository.findById(dto.contrato_id())

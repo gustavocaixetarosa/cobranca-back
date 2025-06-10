@@ -5,7 +5,6 @@ import dev.gustavorosa.cobranca_cp.dto.ContratoDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class Contrato {
     @NotBlank private String nomeContratante;
     private String cpfContratante;
     private Integer duracaoEmMeses;
-    private LocalDate data;
+    private LocalDate dataInicioContrato;
     private Double valorContrato;
     @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos;
@@ -39,7 +38,7 @@ public class Contrato {
         this.nomeContratante = dto.nomeContratante();
         this.cpfContratante = dto.cpfContratante();
         this.duracaoEmMeses = dto.duracaoEmMeses();
-        this.data = dto.data();
+        this.dataInicioContrato = dto.dataInicioContrato();
         this.valorContrato = dto.valorContrato();
         this.pagamentos = new ArrayList<>();
     }
@@ -50,7 +49,7 @@ public class Contrato {
         this.cliente = cliente;
         this.nomeContratante = nomeContratante;
         this.cpfContratante = cpfContratante;
-        this.data = data;
+        this.dataInicioContrato = data;
         this.valorContrato = valorContrato;
         this.pagamentos = pagamentos;
     }
@@ -95,12 +94,12 @@ public class Contrato {
         this.duracaoEmMeses = duracaoEmMeses;
     }
 
-    public LocalDate getData() {
-        return data;
+    public LocalDate getDataInicioContrato() {
+        return dataInicioContrato;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public void setDataInicioContrato(LocalDate dataInicioContrato) {
+        this.dataInicioContrato = dataInicioContrato;
     }
 
     public Double getValorContrato() {

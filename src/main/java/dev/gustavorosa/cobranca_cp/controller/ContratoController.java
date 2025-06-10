@@ -22,7 +22,7 @@ public class ContratoController {
     private ContratoService contratoService;
 
     @PostMapping
-    public ResponseEntity<ContratoDTO> registrarContrato(@RequestBody ContratoDTO contratoDTO){
+    public ResponseEntity<ContratoDetailsDTO> registrarContrato(@RequestBody ContratoDTO contratoDTO){
         Contrato novoContrato = contratoService.registrarContrato(contratoDTO);
 
         URI localNovoContrato = ServletUriComponentsBuilder
@@ -31,7 +31,7 @@ public class ContratoController {
                 .buildAndExpand(novoContrato.getId())
                 .toUri();
 
-        return ResponseEntity.created(localNovoContrato).body(new ContratoDTO(novoContrato));
+        return ResponseEntity.created(localNovoContrato).body(new ContratoDetailsDTO(novoContrato));
     }
 
     @GetMapping

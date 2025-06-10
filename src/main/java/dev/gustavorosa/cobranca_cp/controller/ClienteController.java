@@ -22,6 +22,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteDTO> registraCliente(@RequestBody ClienteDTO clienteDTO){
+        System.out.println(clienteDTO);
         Cliente novoCliente = clienteService.registraCliente(clienteDTO);
 
         URI localNovoCliente = ServletUriComponentsBuilder

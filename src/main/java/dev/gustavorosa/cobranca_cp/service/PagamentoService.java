@@ -6,7 +6,6 @@ import dev.gustavorosa.cobranca_cp.model.Contrato;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
 import dev.gustavorosa.cobranca_cp.model.SituacaoPagamento;
 import dev.gustavorosa.cobranca_cp.repository.PagamentoRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +25,9 @@ public class PagamentoService {
     @Autowired
     private PagamentoFactory pagamentoFactory;
 
-    public List<Pagamento> gerarPagamentosAutomaticos(Contrato novoContrato){
+    public List<Pagamento> gerarPagamentosAutomaticos(Contrato novoContrato, LocalDate primeiraParcela){
         List<Pagamento> novosPagamentos = new ArrayList<>();
-        List<LocalDate> todasDatasVencimento = gerarDatasVencimento(novoContrato);
+        List<LocalDate> todasDatasVencimento = gerarDatasVencimento(primeiraParcela, novoContrato.getDuracaoEmMeses());
         int numeroPagamento = 1;
         for (LocalDate data: todasDatasVencimento){
             novosPagamentos.add(gerarPagamento(novoContrato, data, numeroPagamento));
@@ -38,19 +37,17 @@ public class PagamentoService {
     }
 
     private Pagamento gerarPagamento(Contrato novoContrato, LocalDate data, int numero) {
-        return new Pagamento(null, novoContrato, novoContrato.getValorContrato(), data, null, SituacaoPagamento.EM_ABERTO, null, numero);
+        Pagamento novoPagamento = new Pagamento(null, novoContrato, novoContrato.getValorContrato()/novoContrato.getDuracaoEmMeses(), data, null, null, null, numero);
+        novoPagamento.verificarStatus();
+        return novoPagamento;
     }
 
-    private List<LocalDate> gerarDatasVencimento(Contrato novoContrato){
-        Month primeiroMes = (novoContrato.getData().getDayOfMonth() > LocalDate.now().getDayOfMonth())
-                ? LocalDate.now().getMonth() : LocalDate.now().getMonth().plus(1);
-        List<LocalDate> todasDatas = new ArrayList<>();
-        int anoAtual = LocalDate.now().getYear();
-        for(int i = 0; i < novoContrato.getDuracaoEmMeses(); i++){
-            LocalDate novaData = LocalDate.of(anoAtual, primeiroMes, novoContrato.getData().getYear()).plusMonths(i);
-            todasDatas.add(novaData);
+    private List<LocalDate> gerarDatasVencimento(LocalDate primeiraParcela, int numeroParcelas){
+        List<LocalDate> datasVencimento = new ArrayList<>();
+        for(int i = 0; i < numeroParcelas; i++){
+            datasVencimento.add(primeiraParcela.plusMonths(i));
         }
-        return todasDatas;
+        return datasVencimento;
     }
 
     @Transactional
@@ -76,6 +73,7 @@ public class PagamentoService {
         if(pagamentoRecuperado.isEmpty()) throw new RuntimeException("Pagamento nao encontrado");
         Pagamento pagamentoParaAtualizar = pagamentoRecuperado.get();
         pagamentoParaAtualizar.atualizar(dto);
+        System.out.println("Pagamento atualizado: " + pagamentoParaAtualizar.getDataPagamento());
         this.pagamentoRepository.save(pagamentoParaAtualizar);
 
         return pagamentoParaAtualizar;

@@ -120,11 +120,17 @@ public class Pagamento {
     }
 
     public void atualizar(PagamentoDTO pagamento) {
-        this.dataPagamento = converteDate(pagamento.data_pagamento());
+        if(pagamento.data_pagamento() != null){
+            this.dataPagamento = converteDate(pagamento.data_pagamento());
+        }
+        LocalDate novaDataVencimento = converteDate(pagamento.data_vencimento());
+        if(this.dataVencimento != novaDataVencimento){
+            this.dataVencimento = novaDataVencimento;
+        }
         verificarStatus();
     }
 
-    private void verificarStatus() {
+    public void verificarStatus() {
         if(this.dataPagamento == null && this.dataVencimento.isBefore(LocalDate.now())){
             this.status = SituacaoPagamento.ATRASADO;
         } else if(this.dataPagamento != null){
