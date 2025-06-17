@@ -5,6 +5,7 @@ import dev.gustavorosa.cobranca_cp.dto.PagamentoDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "PAGAMENTOS")
@@ -143,6 +144,7 @@ public class Pagamento {
 
     private LocalDate converteDate(String s) {
         String[] pedacos = s.split("-");
+        System.out.println(Arrays.toString(pedacos));
         int ano = Integer.parseInt(pedacos[0]);
         int mes = Integer.parseInt(pedacos[1]);
         int dia = Integer.parseInt(pedacos[2]);
