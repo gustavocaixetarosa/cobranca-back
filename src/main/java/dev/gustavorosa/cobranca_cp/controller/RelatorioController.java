@@ -1,9 +1,11 @@
 package dev.gustavorosa.cobranca_cp.controller;
 
+import dev.gustavorosa.cobranca_cp.dto.PeriodoDTO;
 import dev.gustavorosa.cobranca_cp.dto.RelatorioRequestDTO;
 import dev.gustavorosa.cobranca_cp.dto.RelatorioResponseDTO;
 import dev.gustavorosa.cobranca_cp.repository.ContratoRepository;
 import dev.gustavorosa.cobranca_cp.service.RelatorioService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,18 +27,17 @@ public class RelatorioController {
     @Autowired
     private ContratoRepository contratoRepository;
 
-//    @PostMapping("/clientes/{idCliente}")
-//    public ResponseEntity<RelatorioResponseDTO> gerarRelatorioDeCliente(@PathVariable Long idCliente, @RequestBody RelatorioRequestDTO request){
-//        File relatorioPdf = relatorioService.relatorioDoCliente(idCliente, request);
-//        return new ResponseEntity<>(new RelatorioResponseDTO(relatorioPdf));
-//    }
+    @PostMapping("/historico/{idCliente}")
+    public ResponseEntity<byte[]> gerarRelatorioDeClienteHistorico(@PathVariable Long idCliente){
+        File relatorioPdf = relatorioService.relatorioDoCliente(idCliente);
+    }
 
-    @PostMapping("/clientes/{idCliente}")
-    public ResponseEntity<byte[]> gerarRelatorioDeCliente(
+    @PostMapping("/periodo/{idCliente}")
+    public ResponseEntity<byte[]> gerarRelatorioDeClientePorPeriodo(
             @PathVariable Long idCliente,
-            @RequestBody RelatorioRequestDTO request) throws IOException {
+            @RequestBody PeriodoDTO periodo) throws IOException {
 
-        File relatorioPdf = relatorioService.relatorioDoCliente(idCliente, request);
+        File relatorioPdf = relatorioService.relatorioDoClientePorPeriodo(idCliente, periodo);
 
         byte[] pdfBytes = Files.readAllBytes(relatorioPdf.toPath());
 

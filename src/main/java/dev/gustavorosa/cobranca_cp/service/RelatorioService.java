@@ -1,16 +1,17 @@
 package dev.gustavorosa.cobranca_cp.service;
 
-import dev.gustavorosa.cobranca_cp.dto.RelatorioRequestDTO;
+import dev.gustavorosa.cobranca_cp.dto.PeriodoDTO;
 import dev.gustavorosa.cobranca_cp.model.Pagamento;
+import dev.gustavorosa.cobranca_cp.relatorio.EstatisticasPagamentos;
 import dev.gustavorosa.cobranca_cp.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RelatorioService {
@@ -18,50 +19,33 @@ public class RelatorioService {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    public File relatorioDoCliente(Long idCliente, RelatorioRequestDTO datas) {
+    public File relatorioDoClienteHistorico(Long idCliente) {
+        List<Pagamento> todosPagamentos = pagamentoRepository.findByContratoClienteId(idCliente);
+        EstatisticasPagamentos estatisticas = calcularEstatisticas(todosPagamentos);
+    }
+
+    private EstatisticasPagamentos calcularEstatisticas(List<Pagamento> pagamentos) {
+        int qtdPagamentos = pagamentos.size();
+        Map<YearMonth, Pagamento> pagamentosAtrasados = new HashMap<>();
+
+        for (Pagamento pagamento : pagamentos) {
+            if(pagamento.foiPagoComAtraso()){
+                pagamentosAtrasados.put(YearMonth.from(pagamento.getDataVencimento()), pagamento);
+            }
+        }
+        int qtdAtrasados = pagamentosAtrasados.size();
+    }
+
+    public File relatorioDoClientePorPeriodo(Long idCliente, PeriodoDTO datas) {
         //Captura todos os dados
-        List<Pagamento> todosPagamentosDoCliente = pagamentoRepository.findByContratoClienteId(idCliente);
+        List<Pagamento> todosPagamentos = pagamentoRepository.findByContratoClienteId(idCliente);
 
         //Calcula taxas e quantidades
-        Map<String, Double> inadimplencias = calculaInadimplencias(todosPagamentosDoCliente, datas);
+        calculaPontuaisEInadimplentes(todosPagamentos);
 
         //Monta pdf
 
         //retorna pdf
         return new File();
-    }
-
-    private Map<String, Double> calculaInadimplencias(List<Pagamento> todosPagamentosDoCliente, RelatorioRequestDTO datas) {
-        Double inadimplenciaHistorica = calcularPorcentagemAtrasada(todosPagamentosDoCliente);
-        Double inadimplenciaPeriodo = getInadimplenciaPeriodo(todosPagamentosDoCliente, datas);
-        Map<String, Double>
-
-    }
-
-    private Double getInadimplenciaPeriodo(List<Pagamento> todosPagamentosDoCliente, RelatorioRequestDTO datas) {
-        List<Pagamento> pagamentosPeriodo = todosPagamentosDoCliente.stream().filter(p -> p.dataVencimentoDentroDePeriodo(datas.dataInicio(), datas.dataFim())).toList();
-        return calcularPorcentagemAtrasada(pagamentosPeriodo);
-    }
-
-    private Double getInadimplenciaHistorica(List<Pagamento> todosPagamentosDoCliente) {
-        return todosPagamentosDoCliente.isEmpty() ? 0.0 :
-                (todosPagamentosDoCliente.stream().filter(Pagamento::foiPagoComAtraso).count() * 100.0)
-                        / todosPagamentosDoCliente.size();
-    }
-
-    private Double calcularPorcentagemAtrasada(List<Pagamento> pagamentos) {
-        return pagamentos.isEmpty() ? 0.0 :
-                (pagamentos.stream().filter(Pagamento::foiPagoComAtraso).count() * 100.0) / pagamentos.size();
-    }
-
-    private Map<YearMonth, Long> getInadimplenciaMesAMes(List<Pagamento> pagamentos) {
-        return pagamentos.stream()
-                .collect(Collectors.groupingBy(
-                        p -> YearMonth.from(p.getDataVencimento()),
-                        Collectors.filtering(
-                                Pagamento::foiPagoComAtraso,
-                                Collectors.counting()
-                        )
-                ));
     }
 }
