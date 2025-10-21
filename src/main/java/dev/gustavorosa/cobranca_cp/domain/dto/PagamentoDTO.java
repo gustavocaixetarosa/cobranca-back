@@ -1,6 +1,6 @@
-package dev.gustavorosa.cobranca_cp.dto;
+package dev.gustavorosa.cobranca_cp.domain.dto;
 
-import dev.gustavorosa.cobranca_cp.model.Pagamento;
+import dev.gustavorosa.cobranca_cp.domain.model.Pagamento;
 
 public record PagamentoDTO(
         Long pagamento_id,

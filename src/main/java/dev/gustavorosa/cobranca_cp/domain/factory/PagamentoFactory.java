@@ -1,10 +1,11 @@
-package dev.gustavorosa.cobranca_cp.factory;
+package dev.gustavorosa.cobranca_cp.domain.factory;
 
-import dev.gustavorosa.cobranca_cp.dto.PagamentoDTO;
-import dev.gustavorosa.cobranca_cp.model.Contrato;
-import dev.gustavorosa.cobranca_cp.model.Pagamento;
-import dev.gustavorosa.cobranca_cp.model.SituacaoPagamento;
-import dev.gustavorosa.cobranca_cp.repository.ContratoRepository;
+import dev.gustavorosa.cobranca_cp.domain.dto.PagamentoDTO;
+import dev.gustavorosa.cobranca_cp.domain.model.Contrato;
+import dev.gustavorosa.cobranca_cp.domain.model.Pagamento;
+import dev.gustavorosa.cobranca_cp.domain.model.SituacaoPagamento;
+import dev.gustavorosa.cobranca_cp.domain.repository.ContratoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,9 @@
-package dev.gustavorosa.cobranca_cp.controller;
+package dev.gustavorosa.cobranca_cp.infra.controller;
 
-import dev.gustavorosa.cobranca_cp.dto.PagamentoDTO;
-import dev.gustavorosa.cobranca_cp.model.Pagamento;
-import dev.gustavorosa.cobranca_cp.service.PagamentoService;
+import dev.gustavorosa.cobranca_cp.domain.dto.PagamentoDTO;
+import dev.gustavorosa.cobranca_cp.domain.model.Pagamento;
+import dev.gustavorosa.cobranca_cp.domain.service.PagamentoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
