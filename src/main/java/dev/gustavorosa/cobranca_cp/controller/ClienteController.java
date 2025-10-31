@@ -17,38 +17,38 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+  @Autowired
+  private ClienteService clienteService;
 
-    @PostMapping
-    public ResponseEntity<ClienteDTO> registraCliente(@RequestBody ClienteDTO clienteDTO){
-        System.out.println(clienteDTO);
-        Cliente novoCliente = clienteService.registraCliente(clienteDTO);
+  @PostMapping
+  public ResponseEntity<ClienteDTO> registraCliente(@RequestBody ClienteDTO clienteDTO) {
+    System.out.println(clienteDTO);
+    Cliente novoCliente = clienteService.registraCliente(clienteDTO);
 
-        URI localNovoCliente = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(novoCliente.getId())
-                .toUri();
+    URI localNovoCliente = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(novoCliente.getId())
+        .toUri();
 
-        return ResponseEntity.created(localNovoCliente).body(new ClienteDTO(novoCliente));
-    }
+    return ResponseEntity.created(localNovoCliente).body(new ClienteDTO(novoCliente));
+  }
 
-    @GetMapping
-    public ResponseEntity<List<ClienteDetailsDTO>> recuperarClientes(){
-        List<Cliente> todosClientes = clienteService.recuperarTodos();
-        List<ClienteDetailsDTO> respostaDTO = todosClientes.stream().map(ClienteDetailsDTO::new).toList();
-        return ResponseEntity.ok(respostaDTO);
-    }
+  @GetMapping
+  public ResponseEntity<List<ClienteDetailsDTO>> recuperarClientes() {
+    List<Cliente> todosClientes = clienteService.recuperarTodos();
+    List<ClienteDetailsDTO> respostaDTO = todosClientes.stream().map(ClienteDetailsDTO::new).toList();
+    return ResponseEntity.ok(respostaDTO);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ClienteDetailsDTO> recuperarClientePorId(@PathVariable Long id){
-        Cliente clienteRecuperado = clienteService.recuperarPorId(id);
-        return ResponseEntity.ok(new ClienteDetailsDTO(clienteRecuperado));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<ClienteDetailsDTO> recuperarClientePorId(@PathVariable Long id) {
+    Cliente clienteRecuperado = clienteService.recuperarPorId(id);
+    return ResponseEntity.ok(new ClienteDetailsDTO(clienteRecuperado));
+  }
 
-    @DeleteMapping("/{id}")
-    public void excluirCliente(@PathVariable Long id){
-        clienteService.excluirCliente(id);
-    }
+  @DeleteMapping("/{id}")
+  public void excluirCliente(@PathVariable Long id) {
+    clienteService.excluirCliente(id);
+  }
 }
