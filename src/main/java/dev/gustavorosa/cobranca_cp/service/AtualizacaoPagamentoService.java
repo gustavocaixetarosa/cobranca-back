@@ -16,39 +16,41 @@ import java.util.List;
 @Service
 public class AtualizacaoPagamentoService {
 
-    private final PagamentoRepository pagamentoRepository;
-    private final AtualizacaoRepository atualizacaoRepository;
+  private final PagamentoRepository pagamentoRepository;
+  private final AtualizacaoRepository atualizacaoRepository;
 
-    @Autowired
-    public AtualizacaoPagamentoService(PagamentoRepository pagamentoRepository, AtualizacaoRepository atualizacaoRepository) {
-        this.pagamentoRepository = pagamentoRepository;
-        this.atualizacaoRepository = atualizacaoRepository;
+  @Autowired
+  public AtualizacaoPagamentoService(PagamentoRepository pagamentoRepository,
+      AtualizacaoRepository atualizacaoRepository) {
+    this.pagamentoRepository = pagamentoRepository;
+    this.atualizacaoRepository = atualizacaoRepository;
+  }
+
+  @Transactional
+  public void atualizarSituacaoSeNecessario() {
+    LocalDate hoje = LocalDate.now();
+
+    AtualizacaoSituacaoPagamento atualizacao = atualizacaoRepository.findById("situacao-pagamento")
+        .orElse(new AtualizacaoSituacaoPagamento());
+
+    if (hoje.equals(atualizacao.getDataUltimaAtualizacao())) {
+      System.out.println("Testando hot reload v2");
+      System.out.println("Atualização já realizada hoje.");
+      return;
     }
 
-    @Transactional
-    public void atualizarSituacaoSeNecessario() {
-        LocalDate hoje = LocalDate.now();
+    System.out.println("Iniciando atualização de situação dos pagamentos...");
 
-        AtualizacaoSituacaoPagamento atualizacao = atualizacaoRepository.findById("situacao-pagamento")
-                .orElse(new AtualizacaoSituacaoPagamento());
+    List<Pagamento> pagamentosAtrasados = pagamentoRepository
+        .findByDataVencimentoBeforeAndDataPagamentoIsNull(hoje);
 
-        if (hoje.equals(atualizacao.getDataUltimaAtualizacao())) {
-            System.out.println("Atualização já realizada hoje.");
-            return;
-        }
+    pagamentosAtrasados.forEach(p -> p.setStatus(SituacaoPagamento.ATRASADO));
 
-        System.out.println("Iniciando atualização de situação dos pagamentos...");
+    pagamentoRepository.saveAll(pagamentosAtrasados);
 
-        List<Pagamento> pagamentosAtrasados = pagamentoRepository
-                .findByDataVencimentoBeforeAndDataPagamentoIsNull(hoje);
+    atualizacao.setDataUltimaAtualizacao(hoje);
+    atualizacaoRepository.save(atualizacao);
 
-        pagamentosAtrasados.forEach(p -> p.setStatus(SituacaoPagamento.ATRASADO));
-
-        pagamentoRepository.saveAll(pagamentosAtrasados);
-
-        atualizacao.setDataUltimaAtualizacao(hoje);
-        atualizacaoRepository.save(atualizacao);
-
-        System.out.println("Atualização concluída em " + LocalDateTime.now());
-    }
+    System.out.println("Atualização concluída em " + LocalDateTime.now());
+  }
 }
