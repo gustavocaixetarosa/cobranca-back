@@ -4,6 +4,8 @@ import dev.gustavorosa.cobranca_cp.dto.ClienteDTO;
 import dev.gustavorosa.cobranca_cp.dto.ClienteDetailsDTO;
 import dev.gustavorosa.cobranca_cp.model.Cliente;
 import dev.gustavorosa.cobranca_cp.service.ClienteService;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/clientes")
 @CrossOrigin(origins = "http://localhost:4200")
+@Slf4j
 public class ClienteController {
 
   @Autowired
@@ -22,7 +25,6 @@ public class ClienteController {
 
   @PostMapping
   public ResponseEntity<ClienteDTO> registraCliente(@RequestBody ClienteDTO clienteDTO) {
-    System.out.println(clienteDTO);
     Cliente novoCliente = clienteService.registraCliente(clienteDTO);
 
     URI localNovoCliente = ServletUriComponentsBuilder
